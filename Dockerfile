@@ -1,9 +1,16 @@
 #FROM java:openjdk-7u65-jdk
 FROM java:7u65
+MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
+# Install necessary software prerequisites
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
+# To maintain consistency this is version specific
+# Should this be latest (1.583) instead?
+##ENV JENKINS_VERSION latest
 ENV JENKINS_VERSION 1.565.3
+
+# Createa user
 RUN mkdir /usr/share/jenkins/
 RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
 
