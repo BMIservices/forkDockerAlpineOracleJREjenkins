@@ -1,13 +1,8 @@
-# Official Jenkins Docker image
+# Jenkins Docker image
 
 The Jenkins Continuous Integration and Delivery server.
 
-This is a fully functional Jenkins server, based on the Long Term Support release
-http://jenkins-ci.org/
-
-
-<img src="http://jenkins-ci.org/sites/default/files/jenkins_logo.png"/>
-
+This is a fully functional Jenkins server, based on the Long Term Support release at http://jenkins-ci.org/
 
 # Usage
 
@@ -48,7 +43,7 @@ Note that some symlinks on some OSes may be converted to copies (this can confus
 
 You can run builds on the master (out of the box) buf if you want to attach build slave servers: make sure you map the port: ```-p 50000:50000``` - which will be used when you connect a slave agent.
 
-<a href="https://registry.hub.docker.com/u/maestrodev/build-agent/">Here</a> is an example docker container you can use as a build server with lots of good tools installed - which is well worth trying.
+[Here](https://registry.hub.docker.com/u/maestrodev/build-agent/) is an example docker container you can use as a build server with lots of good tools installed - which is well worth trying.
 
 # Passing JVM parameters
 
@@ -61,7 +56,7 @@ docker run --name myjenkins -p 8080:8080 -env JAVA_OPTS=-Dhudson.footerURL=http:
 
 # Installing more tools
 
-You can run your container as root - and unstall via apt-get, install as part of build steps via jenkins tool installers, or you can create your own Dockerfile to customise, for example: 
+You can run your container as root - and unistall via apt-get, install as part of build steps via jenkins tool installers, or you can create your own Dockerfile to customise, for example: 
 
 ```
 FROM jenkins

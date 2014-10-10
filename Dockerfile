@@ -1,18 +1,16 @@
-#FROM java:openjdk-7u65-jdk
-FROM java:7u65
+# Pull latest Java 7
+FROM dockerfile/java:oracle_java7
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Install necessary software prerequisites
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
-# To maintain consistency this is version specific
-# Should this be latest (1.583) instead?
+# Pull latest Jenkins
 ENV JENKINS_VERSION latest
-##ENV JENKINS_VERSION 1.565.3
 
-# Createa user
+# Create a user
 RUN mkdir /usr/share/jenkins/
-RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
+RUN useradd -d /home/jenkins -m -s /bin/bash -u 102 jenkins
 
 COPY init.groovy /tmp/WEB-INF/init.groovy
 RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
@@ -33,4 +31,5 @@ EXPOSE 50000
 
 USER jenkins
 
-ENTRYPOINT java $JAVA_OPTS -jar /usr/share/jenkins/jenkins.war --prefix=$JENKINS_PREFIX
+COPY jenkins.sh /usr/local/bin/jenkins.sh
+ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
