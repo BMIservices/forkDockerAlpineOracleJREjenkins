@@ -56,7 +56,7 @@ docker run --name myjenkins -p 8080:8080 -env JAVA_OPTS=-Dhudson.footerURL=http:
 
 # Installing more tools
 
-You can run your container as root - and unistall via apt-get, install as part of build steps via jenkins tool installers, or you can create your own Dockerfile to customise, for example: 
+You can run your container as root - and uninstall via apt-get, install as part of build steps via jenkins tool installers, or you can create your own Dockerfile to customise, for example: 
 
 ```
 FROM jenkins
