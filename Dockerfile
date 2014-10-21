@@ -19,15 +19,17 @@ RUN apt-get -y update && apt-get -y install \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
-# Pull latest Jenkins
-ENV JENKINS_VERSION latest
+# Pull Jenkins
+##ENV JENKINS_VERSION latest
+ENV JENKINS_VERSION 1.585
 
 # Create a user
 RUN mkdir /usr/share/jenkins/ \
     && useradd -d /home/jenkins -m -s /bin/bash -u 102 jenkins
 
 # Download Jenkins file
-RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war
+##RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war
+RUN curl -L http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war
 
 # Setup 
 ENV JENKINS_HOME /var/jenkins_home
@@ -35,7 +37,7 @@ RUN usermod -m -d "$JENKINS_HOME" jenkins \
     && chown -R jenkins "$JENKINS_HOME"
 
 # Expose user configurable persistent storage area
-VOLUME /var/jenkins_home
+VOLUME ["/var/jenkins_home"]
 
 # define url prefix for running jenkins behind Apache (https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache)
 ENV JENKINS_PREFIX /
