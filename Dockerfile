@@ -8,7 +8,7 @@
 # ################################################################
 
 # Pull latest Java 7
-FROM dockerfile/java:oracle_java7
+FROM dockerfile/java:oracle-java7
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Install necessary software prerequisites
