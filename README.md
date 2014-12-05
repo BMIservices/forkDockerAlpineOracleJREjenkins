@@ -7,36 +7,36 @@ This is a fully functional Jenkins server, based on the Long Term Support releas
 # Usage
 
 ```
-docker run -p 8080:8080 jenkins
+docker run -p 8080:8080 --name jenkins cgswong/jenkins
 ```
 
-This will store the workspace in /var/jenkins_home. All Jenkins data lives in there - including plugins and configuration.
+This will store the workspace in */opt/jenkins*. All Jenkins data lives in there - including plugins and configuration.
 You will probably want to make that a persistent volume (recommended):
 
 ```
-docker run -p 8080:8080 -v /your/home:/var/jenkins_home jenkins
+docker run -p 8080:8080 -v */your/home*:/opt/jenkins jenkins
 ```
 
-This will store the jenkins data in /your/home on the host.
-Ensure that /your/home is accessible by the jenkins user in container (jenkins user - uid 102 normally - or use -u root).
+This will store the jenkins data in */your/home* on the host.
+Ensure that */your/home* is accessible by the jenkins user in the container.
 
 
 You can also use a volume container:
 
 ```
-docker run --name myjenkins -p 8080:8080 -v /var/jenkins_home jenkins
+docker run --name jenkins -p 8080:8080 -v /opt/jenkins cgswong/jenkins
 ```
 
-Then myjenkins container has the volume (please do read about docker volume handling to find out more).
+Then **jenkins** container has the volume (please do read about docker volume handling to find out more).
 
 ## Backing up data
 
 If you bind mount in a volume - you can simply back up that directory
-(which is jenkins_home) at any time.
+(which is **/opt/jenkins**) at any time.
 
-This is highly recommended. Treat the jenkins_home directory as you would a database - in Docker you would generally put a database on a volume.
+This is highly recommended. Treat the **/opt/jenkins** directory as you would a database - in Docker you would generally put a database on a volume.
 
-If your volume is inside a container - you can use ```docker cp $ID:/var/jenkins_home``` command to extract the data.
+If your volume is inside a container - you can use ```docker cp $ID:/opt/jenkins``` command to extract the data.
 Note that some symlinks on some OSes may be converted to copies (this can confuse jenkins with lastStableBuild links etc)
 
 # Attaching build executors
@@ -51,7 +51,7 @@ You might need to customize the JVM running Jenkins, typically to pass system pr
 variable for this purpose :
 
 ```
-docker run --name myjenkins -p 8080:8080 -env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins
+docker run --name jenkins -p 8080:8080 -env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com cgswong/jenkins
 ```
 
 # Installing more tools
@@ -67,10 +67,6 @@ USER jenkins # drop back to the regular jenkins user - good practice
 ```
 # Upgrading
 
-All the data needed is in the /var/jenkins_home directory - so depending on how you manage that - depends on how you upgrade. Generally - you can copy it out - and then "docker pull" the image again - and you will have the latest LTS - you can then start up with -v pointing to that data (/var/jenkins_home) and everything will be as you left it.
+All the data needed is in the */opt/jenkins* directory - so depending on how you manage that - depends on how you upgrade. Generally - you can copy it out - and then "docker pull" the image again - and you will have the latest LTS - you can then start up with -v pointing to that data (*/opt/jenkins*) and everything will be as you left it.
 
 As always - please ensure that you know how to drive docker - especially volume handling!
-
-# Questions?
-
-Jump on irc.freenode.net and the #jenkins room. Ask!
