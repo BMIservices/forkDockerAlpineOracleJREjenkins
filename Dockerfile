@@ -35,8 +35,8 @@ RUN mkdir -p ${JENKINS_HOME} \
 
 # Download Jenkins file
 ##RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war
-RUN curl -L http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war
-RUN chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME}
+RUN curl -L http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war \
+  && chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME}
 
 # Expose user configurable persistent storage area
 VOLUME ["${JENKINS_HOME}"]
