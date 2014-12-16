@@ -30,7 +30,7 @@ ENV JENKINS_PREFIX /
 
 # Create a user
 RUN mkdir -p ${JENKINS_HOME} \
-  && groupadd ${JENKINS_GROUP}
+  && groupadd ${JENKINS_GROUP} \
   && useradd -d ${JENKINS_HOME} -m -s /bin/bash -g ${JENKINS_GROUP} -c "Jenkins Service User" ${JENKINS_USER}
 
 # Download Jenkins file
