@@ -55,6 +55,27 @@ variable for this purpose :
 docker run --name jenkins -p 8080:8080 -env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com cgswong/jenkins
 ```
 
+# Passing Jenkins launcher parameters
+
+Argument you pass to docker running the jenkins image are passed to jenkins launcher, so you can run for sample :
+```
+docker run jenkins --version
+```
+This will dump Jenkins version, just like when you run jenkins as an executable war.
+
+You also can define jenkins arguments as `JENKINS_OPTS`. This is usefull to define a set of arguments to pass to jenkins launcher as you
+define a derived jenkins image based on the official one with some customized settings. The following sample Dockerfile uses this option
+to force use of HTTPS with a certificate included in the image
+
+```
+FROM jenkins:1.565.3
+
+COPY https.pem /var/lib/jenkins/cert
+COPY https.key /var/lib/jenkins/pk
+ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8083 --httpsCertificate=/var/lib/jenkins/cert --httpsPrivateKey=/var/lib/jenkins/pk
+EXPOSE 8083
+```
+
 # Installing more tools
 
 You can run your container as root - and uninstall via apt-get, install as part of build steps via jenkins tool installers, or you can create your own Dockerfile to customise, for example: 
@@ -64,8 +85,21 @@ FROM jenkins
 USER root # if we want to install via apt
 RUN apt-get install -y ruby make more-thing-here
 USER jenkins # drop back to the regular jenkins user - good practice
+```
+
+In such a derived image, you can customize your jenkins instance with hook scripts or additional plugins. 
+Those need to be packaged inside the executed jenkins.war, so use :
 
 ```
+RUM mkdir /tmp/WEB-INF/plugins
+RUN curl -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
+RUN curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
+RUN cd /tmp; zip --grow /usr/share/jenkins/jenkins.war WEB-INF/* 
+```
+
+Also see [JENKINS-24986](https://issues.jenkins-ci.org/browse/JENKINS-24986)
+
+
 # Upgrading
 
 All the data needed is in the */opt/jenkins* directory - so depending on how you manage that - depends on how you upgrade. Generally - you can copy it out - and then "docker pull" the image again - and you will have the latest LTS - you can then start up with -v pointing to that data (*/opt/jenkins*) and everything will be as you left it.

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # ################################################################
 # NAME: Dockerfile
 # DESC: Docker file to create Jenk container.
@@ -10,15 +11,32 @@
 #                             Added environment variables.
 #                             Updated Jenkins version to 1.588
 # ################################################################
+=======
+FROM java:openjdk-7u65-jdk
+>>>>>>> e19357018e795585f1e978710c1dc18b24424439
 
 # Pull latest Java 7
 FROM dockerfile/java:oracle-java7
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
+<<<<<<< HEAD
 # Install necessary software prerequisites
 RUN apt-get -y update && apt-get -y install \
     curl \
     && rm -rf /var/lib/apt/lists/*
+=======
+ENV JENKINS_VERSION 1.565.3.1
+RUN mkdir /usr/share/jenkins/
+RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
+
+COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
+RUN curl -L http://nectar-downloads.cloudbees.com/jenkins-enterprise/$JENKINS_VERSION/war/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
+  && cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
+
+ENV JENKINS_HOME /var/jenkins_home
+RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
+VOLUME /var/jenkins_home
+>>>>>>> e19357018e795585f1e978710c1dc18b24424439
 
 # Pull Jenkins
 ##ENV JENKINS_VERSION latest
@@ -79,5 +97,10 @@ EXPOSE 8080
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
+<<<<<<< HEAD
 CMD /usr/local/bin/run
 >>>>>>> 3b38b0ff5b412d055425611ad8be47a97386daa6
+=======
+COPY jenkins.sh /usr/local/bin/jenkins.sh
+ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
+>>>>>>> e19357018e795585f1e978710c1dc18b24424439
