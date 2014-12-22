@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Jenkins Docker image
 
 The Jenkins Continuous Integration and Delivery server.
@@ -70,3 +71,42 @@ USER jenkins # drop back to the regular jenkins user - good practice
 All the data needed is in the */opt/jenkins* directory - so depending on how you manage that - depends on how you upgrade. Generally - you can copy it out - and then "docker pull" the image again - and you will have the latest LTS - you can then start up with -v pointing to that data (*/opt/jenkins*) and everything will be as you left it.
 
 As always - please ensure that you know how to drive docker - especially volume handling!
+=======
+docker-jenkins
+==============
+
+Jenkins in a Docker container; based on Ubuntu 13.10. It comes with the
+following plugins:
+
+ * hipchat.hpi
+ * greenballs.hpi
+ * credentials.hpi
+ * ssh-credentials.hpi
+ * ssh-agent.hpi
+ * git-client.hpi
+ * git.hpi
+ * github.hpi
+ * github-api.hpi
+ * ghprb.hpi
+ * github-oauth.hpi
+ * scm-api.hpi
+ * postbuild-task.hpi
+
+Usage
+-----
+
+    docker run -d -t zaiste/jenkins
+
+Building
+--------
+
+Grab Dockerfile from this repository on Github
+
+    docker build github.com/zaiste/docker-jenkins
+
+Get a Docker image from Docker index
+
+    docker pull zaiste/jenkins
+
+
+>>>>>>> 3b38b0ff5b412d055425611ad8be47a97386daa6
