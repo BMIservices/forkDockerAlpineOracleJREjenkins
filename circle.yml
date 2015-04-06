@@ -17,6 +17,6 @@ test:
 
 deployment:
   hub:
-    branch: v1.608
+    branch: deploy
     commands:
       - $DEPLOY
