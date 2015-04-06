@@ -27,10 +27,9 @@ ENV JENKINS_PREFIX /
 RUN apt-get -y update && apt-get -y install \
     curl \
   && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p ${JENKINS_HOME} \
   && groupadd ${JENKINS_GROUP} \
   && useradd -d ${JENKINS_HOME} -m -s /bin/bash -g ${JENKINS_GROUP} -c "Jenkins Service User" ${JENKINS_USER} \
-  && curl -L http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war \
+  && curl -Ls http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war \
   && chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME}
 
 COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
