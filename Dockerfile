@@ -9,6 +9,7 @@
 #                             Added environment variables.
 #                             Updated Jenkins version to 1.588
 # 2015/04/06 cgwong v1.0.0]: Update to 1.608, use own OraJDK8 base image, optimize RUN commands.
+# 2015/04/13 cgwong v1.1.0]: Remove Groovy code.
 # ################################################################
 
 # Pull latest Java 7
@@ -30,10 +31,8 @@ RUN apt-get -y update && apt-get -y install \
   && groupadd ${JENKINS_GROUP} \
   && useradd -d ${JENKINS_HOME} -m -s /bin/bash -g ${JENKINS_GROUP} -c "Jenkins Service User" ${JENKINS_USER} \
   && curl -Ls http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war \
+  && mkdir -p $JENKINS/HOME/plugins \
   && chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME}
-
-# Expose user configurable persistent storage area
-VOLUME ["${JENKINS_HOME}"]
 
 # Listen for main web interface (8080/tcp) and attached slave agents 50000/tcp
 EXPOSE 8080 50000
