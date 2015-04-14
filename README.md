@@ -1,7 +1,5 @@
 # Official Jenkins Docker image
 
-[![Circle CI](https://circleci.com/gh/cgswong/docker-jenkins/tree/master.svg?style=svg)](https://circleci.com/gh/cgswong/docker-jenkins/tree/master)
-
 [![Circle CI](https://circleci.com/gh/cgswong/docker-jenkins/tree/v1.608.svg?style=svg)](https://circleci.com/gh/cgswong/docker-jenkins/tree/v1.608)
 
 The Jenkins Continuous Integration and Delivery server.
