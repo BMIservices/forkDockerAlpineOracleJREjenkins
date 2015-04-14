@@ -31,6 +31,7 @@ RUN apt-get -y update && apt-get -y install \
   && groupadd ${JENKINS_GROUP} \
   && useradd -d ${JENKINS_HOME} -m -s /bin/bash -g ${JENKINS_GROUP} -c "Jenkins Service User" ${JENKINS_USER} \
   && curl -Ls http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o ${JENKINS_HOME}/jenkins.war \
+  && mkdir -p $JENKINS/HOME/plugins \
   && chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME}
 
 # Listen for main web interface (8080/tcp) and attached slave agents 50000/tcp
