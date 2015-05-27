@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -eo pipefail
+set -eo pipeline
 
 JENKINS_HOME=/opt/jenkins
 PLUGINS_ENDPOINT=${PLUGINS_ENDPOINT:-"http://updates.jenkins-ci.org/latest/"}

@@ -6,7 +6,7 @@ FROM gliderlabs/alpine:3.1
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Setup environment
-ENV JENKINS_VERSION %%VERSION%%
+ENV JENKINS_VERSION 1.610
 #ENV JENKINS_USER jenkins
 #ENV JENKINS_GROUP jenkins
 ENV JENKINS_HOME /opt/jenkins
