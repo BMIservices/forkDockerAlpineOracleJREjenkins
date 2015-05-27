@@ -18,6 +18,6 @@ test:
 
 deployment:
   hub:
-    branch: %%VERSION%%
+    branch: master
     commands:
       - $DEPLOY
