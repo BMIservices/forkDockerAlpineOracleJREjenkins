@@ -6,7 +6,7 @@ FROM alpine:latest
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Setup environment
-ENV JENKINS_VERSION 1.614
+ENV JENKINS_VERSION 1.617
 ENV JENKINS_USER jenkins
 ENV JENKINS_GROUP jenkins
 ENV JENKINS_HOME /opt/jenkins

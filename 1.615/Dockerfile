@@ -50,3 +50,4 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 USER ${JENKINS_USER}
 
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
+CMD [""]
