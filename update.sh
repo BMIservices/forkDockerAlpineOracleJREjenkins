@@ -7,13 +7,13 @@ set -e
 
 declare -A aliases
 aliases=(
-  [1.616]='latest'
+  [1.617]='latest'
 )
 
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( */ )
+versions=( 1.*/ )
 versions=( "${versions[@]%/}" )
 downloadable=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp')
 url='git://github.com/cgswong/docker-jenkins'

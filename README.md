@@ -2,11 +2,12 @@
 
 [![Circle CI](https://circleci.com/gh/cgswong/docker-jenkins/tree/master.svg?style=svg)](https://circleci.com/gh/cgswong/docker-jenkins/tree/master)
 
-The [Jenkins Continuous Integration and Delivery server](http://jenkins-ci.org/) based on Alpine Linux 3.1 image with Oracle JDK 8.
+The [Jenkins Continuous Integration and Delivery server](http://jenkins-ci.org/) based on Alpine Linux image with Oracle JDK 8.
 
 <img src="http://jenkins-ci.org/sites/default/files/jenkins_logo.png"/>
 
 # Usage
+Simple invocation:
 
 ```sh
 docker run -d --publish 8080:8080 cgswong/jenkins:latest
