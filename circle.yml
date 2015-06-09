@@ -13,8 +13,6 @@ dependencies:
 test:
   override:
     - ./test.sh
-      files:
-        - tests
 
 deployment:
   hub:
