@@ -7,7 +7,7 @@ set -e
 
 declare -A aliases
 aliases=(
-  [1.615]='latest'
+  [1.616]='latest'
 )
 
 # Script directory
@@ -21,7 +21,6 @@ url='git://github.com/cgswong/docker-jenkins'
 for version in "${versions[@]}"; do
   recent=$(echo "$downloadable" | grep -m 1 "$version")
   sed 's/%%VERSION%%/'"$recent"'/' <Dockerfile.tpl >"$version/Dockerfile"
-  sed 's/%%VERSION%%/'"$recent"'/' <circle.yml.tpl >"$version/circle.yml"
   cp jenkins.sh ${version}/
 
   commit="$(git log -1 --format='format:%H' -- "$version")"

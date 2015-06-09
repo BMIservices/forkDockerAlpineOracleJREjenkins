@@ -16,9 +16,4 @@ done
 
 chown -R $JENKINS_USER:$JENKINS_GROUP $JENKINS_PLUGINS
 
-# if `docker run` first argument start with `--` the user is passing Jenkins launcher arguments
-if [[ $# -ge 1 ]] || [[ "$1" == "--"* ]]; then
-  java -jar ${JENKINS_HOME}/jenkins.war "$@"
-else
-  exec "$@"
-fi
+java -jar ${JENKINS_HOME}/jenkins.war "$@"

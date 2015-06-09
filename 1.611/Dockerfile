@@ -2,7 +2,7 @@
 # DESC: Docker file to create Jenkins container.
 # ################################################################
 
-FROM gliderlabs/alpine:3.1
+FROM alpine:latest
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Setup environment
@@ -11,6 +11,8 @@ ENV JENKINS_USER jenkins
 ENV JENKINS_GROUP jenkins
 ENV JENKINS_HOME /opt/jenkins
 ENV JENKINS_VOL /var/lib/jenkins
+
+ENV PKG_URL "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64"
 
 ENV JAVA_VERSION_MAJOR 8
 ENV JAVA_VERSION_MINOR 45
@@ -23,8 +25,8 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN apk --update add \
       curl \
       bash && \
-    curl --silent --insecure --location --remote-name "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" &&\
-    curl --silent --insecure --location --remote-name "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" &&\
+    curl --silent --insecure --location --remote-name "${PKG_URL}/glibc-2.21-r2.apk" &&\
+    curl --silent --insecure --location --remote-name "${PKG_URL}/glibc-bin-2.21-r2.apk" &&\
     apk add --allow-untrusted \
       glibc-2.21-r2.apk \
       glibc-bin-2.21-r2.apk &&\
@@ -48,4 +50,3 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 USER ${JENKINS_USER}
 
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
-CMD [""]
