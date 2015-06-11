@@ -2,7 +2,7 @@ machine:
   services:
     - docker
   environment:
-    PATH: $PATH:~/deps
+    PATH: $PATH:~/deps/bin
 
 dependencies:
   cache_directories:
