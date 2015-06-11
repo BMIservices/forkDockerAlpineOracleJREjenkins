@@ -7,8 +7,8 @@ dependencies:
     - "~/docker"
     - "~/deps"
   pre:
-    - [[ ! -d ~/deps ]] && mkdir -p ~/deps
-    - [[ ! -d ~/docker ]] && mkdir -p ~/docker
+    - if [[ ! -d ~/deps ]]; then mkdir -p ~/deps; fi
+    - if [[ ! -d ~/docker ]]; then mkdir -p ~/docker; fi
     - git clone https://github.com/sstephenson/bats.git
     - cd bats && sudo ./install.sh ~/deps
   override:
