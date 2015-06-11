@@ -7,7 +7,7 @@ SLEEP=25
 # Exit immediately upon failure and carry failures over pipes
 set -eo pipefail
 
-IMAGE=${1:-"jenkins"} ; export IMAGE
+IMAGE="jenkins" ; export IMAGE
 host=$(echo $DOCKER_HOST|cut -d":" -f2|sed -e 's/\/\///')
 
 versions=( 1.*/ )

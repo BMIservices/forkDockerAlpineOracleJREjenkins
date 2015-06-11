@@ -24,7 +24,7 @@ for version in "${versions[@]}"; do
   cp jenkins.sh ${version}/
 
   commit="$(git log -1 --format='format:%H' -- "$version")"
-  fullVersion="$(grep -m1 'ENV ZK_VERSION' "$version/Dockerfile" | cut -d' ' -f3)"
+  fullVersion="$(grep -m1 'ENV JENKINS_VERSION' "$version/Dockerfile" | cut -d' ' -f3)"
 
   versionAliases=()
   while [ "$fullVersion" != "$version" -a "${fullVersion%[-]*}" != "$fullVersion" ]; do
