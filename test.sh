@@ -3,7 +3,7 @@
 # DESC: Run testing.
 # #########################################
 
-SLEEP=25
+SLEEP=30
 # Exit immediately upon failure and carry failures over pipes
 set -eo pipefail
 

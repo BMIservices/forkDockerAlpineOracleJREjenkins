@@ -2,7 +2,7 @@
 
 setup() {
   # Setup environment
-  SLEEP=25
+  SLEEP=30
   host=$(echo $DOCKER_HOST|cut -d":" -f2|sed -e 's/\/\///')
 
   # Launch container

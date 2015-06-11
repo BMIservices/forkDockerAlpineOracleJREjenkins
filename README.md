@@ -1,7 +1,5 @@
 # Jenkins Docker image
 
-[![Circle CI](https://circleci.com/gh/cgswong/docker-jenkins/tree/master.svg?style=svg)](https://circleci.com/gh/cgswong/docker-jenkins/tree/master)
-
 The [Jenkins Continuous Integration and Delivery server](http://jenkins-ci.org/) based on Alpine Linux image with Oracle JDK 8.
 
 <img src="http://jenkins-ci.org/sites/default/files/jenkins_logo.png"/>
