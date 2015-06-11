@@ -1,6 +1,8 @@
 machine:
   services:
     - docker
+  environment:
+    PATH: $PATH:~/deps
 
 dependencies:
   cache_directories:
