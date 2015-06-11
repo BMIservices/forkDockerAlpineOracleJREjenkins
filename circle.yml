@@ -19,8 +19,7 @@ dependencies:
 
 test:
   override:
-    - ./build.sh -nc
-    - ./test.sh
+    - ./build.sh -nc ; ./test.sh
 
 deployment:
   hub:
