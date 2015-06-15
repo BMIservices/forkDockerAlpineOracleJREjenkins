@@ -13,8 +13,8 @@ setup() {
 
 teardown () {
   # Cleanup
-  docker stop ${IMAGE}
-  docker rm ${IMAGE}  
+  docker stop ${IMAGE} >/dev/null
+  docker rm ${IMAGE} >/dev/null
 }
 
 @test "Check Jenkins status" {
