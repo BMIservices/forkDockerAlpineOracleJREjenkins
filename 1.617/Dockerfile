@@ -37,7 +37,9 @@ RUN apk --update add \
     curl --silent --location http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war --output ${JENKINS_HOME}/jenkins.war &&\
     addgroup ${JENKINS_GROUP} &&\
     adduser -h ${JENKINS_HOME} -D -s /bin/bash -G ${JENKINS_GROUP} ${JENKINS_USER} &&\
-    chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME} ${JENKINS_VOL}
+    chown -R ${JENKINS_USER}:${JENKINS_GROUP} ${JENKINS_HOME} ${JENKINS_VOL} &&\
+    for plugins in credentials ssh-credentials ssh-agent ssh-slaves git-client git github github-api github-oauth ghprb scm-api postbuild-task greenballs; do  curl --silent --location --insecure http://updates.jenkins-ci.org/latest/${plugins}.hpi --output $JENKINS_PLUGINS/${plugins}.hpi; done
+
 
 # Listen for main web interface (8080/tcp) and attached slave agents (50000/tcp)
 EXPOSE 8080 50000
