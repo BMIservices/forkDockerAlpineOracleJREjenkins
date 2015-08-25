@@ -16,16 +16,16 @@ reset=$(tput sgr0)
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( "$1" )
+versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-	versions=( vers/*/ )
+	versions=( 1.* )
 fi
 versions=( "${versions[@]%/}" )
 sortedVers=$(printf '%s\n' "${versions[@]}"|sort -V)
 
 dlVersions=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp' | sort -V | uniq)
 for version in "${sortedVers[@]}"; do
-  echo "$dlVersions" | grep "$version" 2>/dev/null
+  echo "$dlVersions" | grep "$version" &>/dev/null
   if [ ! $? ]; then
     echo >&2 "${red}WARNING: Cannot find download version for ${version}!${reset}"
     continue
