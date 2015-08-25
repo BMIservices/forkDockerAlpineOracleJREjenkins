@@ -1,39 +1,35 @@
 #!/usr/local/bin/bash
-# ###################################################
-# DESC.: Update Dockerfile for each version directory.
-#        Show some information on each version.
-# ###################################################
+# Add files for each version and show some information on each version.
+
 set -e
 
-declare -A aliases
-aliases=(
-  [1.620]='latest'
-)
+# set colors
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+purple=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+reset=$(tput sgr0)
 
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( 1.*/ )
+versions=( "$1" )
+if [ ${#versions[@]} -eq 0 ]; then
+	versions=( vers/*/ )
+fi
 versions=( "${versions[@]%/}" )
-downloadable=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp')
-url='git://github.com/cgswong/docker-jenkins'
+sortedVers=$(printf '%s\n' "${versions[@]}"|sort -V)
 
-for version in "${versions[@]}"; do
-  recent=$(echo "$downloadable" | grep -m 1 "$version")
-  sed 's/%%VERSION%%/'"$recent"'/' <Dockerfile.tpl >"$version/Dockerfile"
-  cp jenkins.sh ${version}/
+dlVersions=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp' | sort -V | uniq)
+for version in "${sortedVers[@]}"; do
+  if [ ! $(echo "$dlVersions" | grep "$version") ]; then
+    echo >&2 "${red}WARNING: Cannot find download version for ${version}!${reset}"
+    continue
+  fi
 
-  commit="$(git log -1 --format='format:%H' -- "$version")"
-  fullVersion="$(grep -m1 'ENV JENKINS_VERSION' "$version/Dockerfile" | cut -d' ' -f3)"
-
-  versionAliases=()
-  while [ "$fullVersion" != "$version" -a "${fullVersion%[-]*}" != "$fullVersion" ]; do
-    versionAliases+=( $fullVersion )
-    fullVersion="${fullVersion%[-]*}"
-  done
-  versionAliases+=( $version ${aliases[$version]} )
-
-  for va in "${versionAliases[@]}"; do
-    echo "$va: ${url}@${commit} $version"
-  done
+  cp docker-entrypoint.sh ${version}/
+  sed -e 's/%%VERSION%%/'"$version"'/' < Dockerfile.tpl > "$version/Dockerfile"
 done
