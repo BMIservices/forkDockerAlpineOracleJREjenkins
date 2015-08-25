@@ -1,1 +1,0 @@
-Jenkins CI server (~423 MB).

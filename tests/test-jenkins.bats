@@ -6,7 +6,7 @@ setup() {
   host=$(echo $DOCKER_HOST|cut -d":" -f2|sed -e 's/\/\///')
 
   # Launch container
-  docker run -d --name ${IMAGE} -P ${IMAGE}:${TAG}
+  docker run -d --name ${DOCKER_IMAGE} -P ${DOCKER_IMAGE}:${TAG}
   port=$(docker port ${IMAGE} | grep 8080 | cut -d":" -f2)
   url="http://${host}:${port}"
 }
