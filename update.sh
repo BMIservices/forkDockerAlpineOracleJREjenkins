@@ -25,7 +25,8 @@ sortedVers=$(printf '%s\n' "${versions[@]}"|sort -V)
 
 dlVersions=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp' | sort -V | uniq)
 for version in "${sortedVers[@]}"; do
-  if [ ! $(echo "$dlVersions" | grep "$version") ]; then
+  echo "$dlVersions" | grep "$version" 2>/dev/null
+  if [ ! $? ]; then
     echo >&2 "${red}WARNING: Cannot find download version for ${version}!${reset}"
     continue
   fi
