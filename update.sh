@@ -21,10 +21,10 @@ if [ ${#versions[@]} -eq 0 ]; then
 	versions=( 1.* )
 fi
 versions=( "${versions[@]%/}" )
-sortedVers=( $(printf '%s\n' "${versions[@]}"|sort -V) )
+versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 
 dlVersions=$(curl -sSL 'http://mirrors.jenkins-ci.org/war/' | sed -rn 's!.*?>([0-9]+\.[0-9]+[0-9]+[0-9]).*!\1!gp' | sort -V | uniq)
-for version in "${sortedVers[@]}"; do
+for version in "${versions[@]}"; do
   echo "${yellow}Updating version: ${version}${reset}"
   cp docker-entrypoint.sh "${version}/"
   sed -e 's/%%VERSION%%/'"$version"'/' < Dockerfile.tpl > "$version/Dockerfile"
