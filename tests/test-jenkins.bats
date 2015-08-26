@@ -7,14 +7,14 @@ setup() {
 
   # Launch container
   docker run -d --name ${DOCKER_IMAGE} -P ${DOCKER_IMAGE}:${TAG}
-  port=$(docker port ${IMAGE} | grep 8080 | cut -d":" -f2)
+  port=$(docker port ${DOCKER_IMAGE} | grep 8080 | cut -d":" -f2)
   url="http://${host}:${port}"
 }
 
 teardown () {
   # Cleanup
-  docker stop ${IMAGE} >/dev/null
-  docker rm ${IMAGE} >/dev/null
+  docker stop ${DOCKER_IMAGE} &>/dev/null
+  docker rm ${DOCKER_IMAGE} &>/dev/null
 }
 
 @test "Check Jenkins status" {

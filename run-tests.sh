@@ -30,4 +30,4 @@ for TAG in "${versions[@]}"; do
   bats tests
 done
 
-echo "${green}[CI] ${IMAGE} tests okay on all tags.${reset}"
+echo "${yellow}[CI] ${DOCKER_IMAGE} tests completed on all tags.${reset}"
