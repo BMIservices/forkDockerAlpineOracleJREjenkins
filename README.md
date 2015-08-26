@@ -7,8 +7,8 @@ The [Jenkins Continuous Integration and Delivery server](http://jenkins-ci.org/)
 # Usage
 Simple invocation:
 
-```sh
-docker run -d --publish 8080:8080 cgswong/jenkins:latest
+```console
+docker run -d --publish 8080:8080 cgswong/jenkins
 ```
 
 The volume `/var/lib/jenkins` stores plugins, data and configuration. This can be mounted for further customization and/or data backup.
@@ -23,14 +23,14 @@ You can run builds on the master (out of the box) but if you want to attach buil
 # Passing parameters
 You might need to customize the JVM running Jenkins, typically to pass system properties or tweak heap memory settings. Just pass these as parameters on the command line per normal:
 
-```sh
-docker run --name jenkins --publish 8080:8080 cgswong/jenkins:latest -Dhudson.footerURL=http://mycompany.com
+```console
+docker run --name jenkins --publish 8080:8080 cgswong/jenkins -Dhudson.footerURL=http://mycompany.com
 ```
 
 The same goes for passing Jenkins launcher parameters:
 
-```sh
-docker run --name jenkins --publish 8080:8080 cgswong/jenkins:latest --version
+```console
+docker run --name jenkins --publish 8080:8080 cgswong/jenkins --version
 ```
 
 This will dump Jenkins version, just like when you run Jenkins as an executable war.
