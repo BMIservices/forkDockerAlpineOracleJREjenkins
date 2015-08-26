@@ -10,7 +10,7 @@ logfile="$pkg_path/$pkg.log"
 
 DOCKER_IMAGE=${1:-"jenkins"} ; export DOCKER_IMAGE
 DOCKER_MACHINE_NAME=${2:-"citest"} ; export DOCKER_MACHINE_NAME
-DOCKER_MACHINE_HDD=${DOCKER_MACHINE_HDD:-"20480"} export DOCKER_MACHINE_HDD
+DOCKER_MACHINE_HDD=${DOCKER_MACHINE_HDD:-"10240"} export DOCKER_MACHINE_HDD
 
 # set colors
 red=$(tput setaf 1)
