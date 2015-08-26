@@ -10,6 +10,7 @@ logfile="$pkg_path/$pkg.log"
 
 DOCKER_IMAGE=${1:-"jenkins"} ; export DOCKER_IMAGE
 DOCKER_MACHINE_NAME=${2:-"citest"} ; export DOCKER_MACHINE_NAME
+DOCKER_MACHINE_HDD=${DOCKER_MACHINE_HDD:-"20480"} export DOCKER_MACHINE_HDD
 
 # set colors
 red=$(tput setaf 1)
@@ -37,7 +38,7 @@ machine-init() {
       exit 1
     fi
     echo "${yellow}[CI] Creating Docker host (${DOCKER_MACHINE_NAME})...${reset}"
-    docker-machine create --driver virtualbox ${DOCKER_MACHINE_NAME}
+    docker-machine create --driver virtualbox ${DOCKER_MACHINE_NAME} --virtualbox-disk-size ${DOCKER_MACHINE_HDD}
   else
     docker-machine ls | grep ${DOCKER_MACHINE_NAME} | grep Running &>/dev/null
     if [ $? -ne 0 ]; then
