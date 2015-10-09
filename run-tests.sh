@@ -1,7 +1,9 @@
 #! /bin/bash
 # Run testing.
 
-SLEEP=30
+# Set values
+pkg=${0##*/}
+pkg_path=$(cd $(dirname $0); pwd -P)
 
 # set colors
 red=$(tput setaf 1)
@@ -15,18 +17,19 @@ reset=$(tput sgr0)
 
 DOCKER_IMAGE=${1:-"jenkins"} ; export DOCKER_IMAGE
 DOCKER_MACHINE_NAME=${DOCKER_MACHINE_NAME:-"citest"} ; export DOCKER_MACHINE_NAME
+eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-        versions=( 1.* )
+  versions=( 1.* )
 fi
 versions=( "${versions[@]%/}" )
 versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 
-for TAG in "${versions[@]}"; do
+for VERSION in "${versions[@]}"; do
   echo "${green}[CI] -----------------------------------------------"
-  echo "${green}[CI] Running tests for: ${DOCKER_IMAGE}:${TAG}${reset}"
-  export TAG
+  echo "${green}[CI] Running tests for: ${DOCKER_IMAGE}:${VERSION}${reset}"
+  export VERSION
   bats tests
 done
 
