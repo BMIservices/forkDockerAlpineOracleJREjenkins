@@ -1,9 +1,7 @@
 general:
   branches:
     only:
-      - master
       - develop
-
 machine:
   services:
     - docker
