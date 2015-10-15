@@ -1,7 +1,7 @@
 general:
   branches:
     only:
-      - develop
+      - master
 machine:
   services:
     - docker
@@ -24,9 +24,9 @@ test:
   override:
     - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do export VERSION && bats tests && done
 
-deployment:
-  hub:
-    branch: master
-    commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PWD
-      - docker push $CIRCLE_PROJECT_USERNAME/$DOCKER_IMAGE:$VERSION
+#deployment:
+#  hub:
+#    branch: master
+#    commands:
+#      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PWD
+#      - docker push $CIRCLE_PROJECT_USERNAME/$DOCKER_IMAGE:$VERSION
