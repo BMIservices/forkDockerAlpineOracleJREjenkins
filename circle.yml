@@ -18,8 +18,7 @@ dependencies:
   override:
     - docker info
     - if [ -e ~/docker/image.tar ]; then docker load --input ~/docker/image.tar; fi
-    - ~/$CIRCLE_PROJECT_REPONAME/ci-test.sh
-    - mkdir -p ~/docker; docker save ${DOCKER_IMAGE}:${VERSION} > ~/docker/image.tar
+    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do docker build -t ${DOCKER_IMAGE}:${VERSION} ${VERSION} && mkdir -p ~/docker && docker save ${DOCKER_IMAGE}:${VERSION} > ~/docker/image.tar ; done
 
 test:
   pre:

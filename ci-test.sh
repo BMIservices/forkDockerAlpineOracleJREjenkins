@@ -33,6 +33,7 @@ for VERSION in "${versions[@]}"; do
   else
     echo "${red}[CI] Build failed for: ${DOCKER_IMAGE}:${VERSION}${reset}"
   fi
+  mkdir -p ~/docker; docker save ${DOCKER_IMAGE}:${VERSION} > ~/docker/image.tar
 done
 
 echo "${yellow}[CI] ${DOCKER_IMAGE} tests completed, check logs above.${reset}"
