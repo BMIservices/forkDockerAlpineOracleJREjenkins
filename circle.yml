@@ -1,0 +1,34 @@
+general:
+  branches:
+    only:
+      - master
+      - develop
+
+machine:
+  services:
+    - docker
+  environment:
+    DOCKER_IMAGE: jenkins
+
+dependencies:
+  pre:
+    - if [[ ! -e bats ]]; then git clone https://github.com/sstephenson/bats.git && cd bats && sudo ./install.sh /usr/local; fi
+  cache_directories:
+    - "~/docker"
+  override:
+    - docker info
+    - if [ -e ~/docker/image.tar ]; then docker load --input ~/docker/image.tar; fi
+    - docker build -t $DOCKER_IMAGE:$VERSION .
+    - mkdir -p ~/docker; docker save $DOCKER_IMAGE:$VERSION > ~/docker/image.tar
+
+test:
+  pre:
+  override:
+    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do echo "${green}[CI] -----------------------------------------------" && echo "${green}[CI] Running tests for: ${DOCKER_IMAGE}:${VERSION}${reset}" && export VERSION && bats tests && done
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PWD
+      - docker push $CIRCLE_PROJECT_USERNAME/$DOCKER_IMAGE:$VERSION
