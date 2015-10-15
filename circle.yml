@@ -5,10 +5,10 @@ general:
       - develop
 
 machine:
-  services:
-    - docker
   environment:
     DOCKER_IMAGE: jenkins
+  services:
+    - docker
 
 dependencies:
   pre:
@@ -18,8 +18,8 @@ dependencies:
   override:
     - docker info
     - if [ -e ~/docker/image.tar ]; then docker load --input ~/docker/image.tar; fi
-    - docker build -t $DOCKER_IMAGE:$VERSION .
-    - mkdir -p ~/docker; docker save $DOCKER_IMAGE:$VERSION > ~/docker/image.tar
+    - docker build -t ${DOCKER_IMAGE}:${VERSION} .
+    - mkdir -p ~/docker; docker save ${DOCKER_IMAGE}:${VERSION} > ~/docker/image.tar
 
 test:
   pre:
