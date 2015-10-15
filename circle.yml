@@ -2,6 +2,8 @@ general:
   branches:
     only:
       - master
+      - develop
+
 machine:
   services:
     - docker
@@ -22,7 +24,7 @@ dependencies:
 test:
   pre:
   override:
-    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do export VERSION && bats tests && done
+    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do bats tests ; done
 
 #deployment:
 #  hub:
