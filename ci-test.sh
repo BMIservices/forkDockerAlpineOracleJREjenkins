@@ -24,6 +24,7 @@ fi
 versions=( "${versions[@]%/}" )
 versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 
+if [ -e ~/docker/image.tar ]; then docker load --input ~/docker/image.tar; fi
 for VERSION in "${versions[@]}"; do
   echo "${green}[CI] -----------------------------------------------"
   echo "${green}[CI] Building Docker image: ${DOCKER_IMAGE}:${VERSION}${reset}"
