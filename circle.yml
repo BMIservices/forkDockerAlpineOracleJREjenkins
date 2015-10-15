@@ -22,7 +22,7 @@ dependencies:
 test:
   pre:
   override:
-    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do echo "${green}[CI] -----------------------------------------------" && echo "${green}[CI] Running tests for: ${DOCKER_IMAGE}:${VERSION}${reset}" && export VERSION && bats tests && done
+    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do export VERSION && bats tests && done
 
 deployment:
   hub:
