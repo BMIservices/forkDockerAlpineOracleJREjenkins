@@ -2,31 +2,26 @@ general:
   branches:
     only:
       - master
-      - develop
 
 machine:
-  environment:
-    DOCKER_IMAGE: jenkins
   services:
     - docker
+  environment:
+    DOCKER_IMAGE: jenkins
 
 dependencies:
-  pre:
-    - if [[ ! -e bats ]]; then git clone https://github.com/sstephenson/bats.git && cd bats && sudo ./install.sh /usr/local; fi
   cache_directories:
     - "~/docker"
   override:
     - docker info
-    - ~/$CIRCLE_PROJECT_REPONAME/ci-test.sh
+    - mkdir -p ~/docker
 
 test:
-  pre:
   override:
-    - versions=( 1.* ) && versions=( "${versions[@]%/}" ) && versions=( $(printf '%s\n' "${versions[@]}"|sort -V) ) && for VERSION in "${versions[@]}"; do bats tests ; done
+    - ~/${CIRCLE_PROJECT_REPONAME}/run-tests.sh
 
-#deployment:
-#  hub:
-#    branch: master
-#    commands:
-#      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PWD
-#      - docker push $CIRCLE_PROJECT_USERNAME/$DOCKER_IMAGE:$VERSION
+deployment:
+  hub:
+    branch: master
+    commands:
+      - $DEPLOY

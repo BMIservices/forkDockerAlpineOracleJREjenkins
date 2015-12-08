@@ -6,7 +6,6 @@ set -e
 # Set values
 pkg=${0##*/}
 pkg_path=$(cd $(dirname $0); pwd -P)
-travisEnv=
 
 # set colors
 red=$(tput setaf 1)
@@ -33,13 +32,5 @@ for version in "${versions[@]}"; do
   echo "${yellow}Updating version: ${version}${reset}"
   cp docker-entrypoint.sh "${version}/"
   sed -e 's/%%VERSION%%/'"$version"'/' < Dockerfile.tpl > "$version/Dockerfile"
-	if ! grep "  - VERSION=$version" .travis.yml &>/dev/null ; then
-		travisEnv='\n  - VERSION='"$version$travisEnv"
-	fi
 done
-if [ ! -z "$travisEnv" ] ; then
-	echo "${yellow}Updating Travis CI${reset}"
-	travis="$(awk -v 'RS=\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
-	echo "$travis" > .travis.yml
-fi
 echo "${green}Complete${reset}"

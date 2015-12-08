@@ -1,23 +1,36 @@
-#! /usr/bin/env bats
+#!/usr/bin/env bash -x
+# Test case for Docker build
 
-setup() {
-  # Setup environment
-  host=$(echo $DOCKER_HOST|cut -d":" -f2|sed -e 's/\/\///')
+# Set values
+pkg=${0##*/}
+pkg_root=$(dirname "${BASH_SOURCE}")
 
-  # Launch container
-  docker run -d --name ${DOCKER_IMAGE} -P ${DOCKER_IMAGE}:${VERSION}
-  port=$(docker port ${DOCKER_IMAGE} | grep 8080 | cut -d":" -f2)
-  url="http://${host}:${port}"
-}
+# Source common script
+source "${pkg_root}/../common.sh"
 
-teardown () {
-  # Cleanup
-  docker stop ${DOCKER_IMAGE} &>/dev/null
+# main function
+main() {
+  log "${green}Confirming ${DOCKER_IMAGE} version${reset}"
+  docker run -d -P --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${TAG} &>/dev/null
+  port=$(docker inspect --format '{{(index (index .NetworkSettings.Ports "8080/tcp") 0).HostPort}}' ${DOCKER_IMAGE})
+#  host=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${DOCKER_IMAGE})
+  # We need the Docker hosts IP here since we can't always use SDN to access the Docker container directly
+  if [ -z ${DOCKER_MACHINE_NAME} ]; then
+    myhost=$(host $(hostname) | cut -d' ' -f4)
+  else
+    myhost=$(docker-machine ip ${DOCKER_MACHINE_NAME})
+  fi
+  url="http://${myhost}:${port}"
+  sleep 5
+  curl --retry 5 --retry-delay 5 -sSL --head --write-out "%{http_code}" ${url} --output /dev/null
+  if [ $? -eq 0 ]; then
+    log "${green}[PASS] ${DOCKER_IMAGE} Status ${reset}"
+  else
+    docker rm -f ${DOCKER_IMAGE} &>/dev/null
+    die "${DOCKER_IMAGE} status check"
+  fi
   docker rm -f ${DOCKER_IMAGE} &>/dev/null
 }
 
-@test "Check Jenkins status" {
-  sleep 15
-  run curl --retry 10 --retry-delay 5 --silent --output /dev/null --location --head --write-out "%{http_code}" $url
-  [[ "$output" =~ "200" ]]
-}
+check-env
+main
