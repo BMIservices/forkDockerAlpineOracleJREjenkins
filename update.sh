@@ -5,7 +5,7 @@ set -e
 
 # Set values
 pkg=${0##*/}
-pkg_path=$(cd $(dirname $0); pwd -P)
+pkg_root=$(dirname "${BASH_SOURCE}")
 
 # Source common script
 source "${pkg_root}/common.sh"
