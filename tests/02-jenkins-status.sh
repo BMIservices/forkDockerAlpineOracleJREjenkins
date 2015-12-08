@@ -21,7 +21,7 @@ main() {
     myhost=$(docker-machine ip ${DOCKER_MACHINE_NAME})
   fi
   url="http://${myhost}:${port}"
-  sleep 5
+  sleep 10
   curl --retry 5 --retry-delay 5 -sSL --head --write-out "%{http_code}" ${url} --output /dev/null
   if [ $? -eq 0 ]; then
     log "${green}[PASS] ${DOCKER_IMAGE} Status ${reset}"
