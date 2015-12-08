@@ -7,15 +7,8 @@ set -e
 pkg=${0##*/}
 pkg_path=$(cd $(dirname $0); pwd -P)
 
-# set colors
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-blue=$(tput setaf 4)
-purple=$(tput setaf 5)
-cyan=$(tput setaf 6)
-white=$(tput setaf 7)
-reset=$(tput sgr0)
+# Source common script
+source "${pkg_root}/common.sh"
 
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
