@@ -1,6 +1,6 @@
 # Docker file to create Jenkins container.
 
-FROM cgswong/java:orajdk8
+FROM cgswong/java:orajre8
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 # Setup environment

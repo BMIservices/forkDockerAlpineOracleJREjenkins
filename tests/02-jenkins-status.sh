@@ -8,9 +8,9 @@ pkg_root=$(dirname "${BASH_SOURCE}")
 # Source common script
 source "${pkg_root}/../common.sh"
 
-# main function
-main() {
-  log "${green}Confirming ${DOCKER_IMAGE} version${reset}"
+# Start container and get information
+setup() {
+  log "${yellow}Confirming ${DOCKER_IMAGE} status${reset}"
   docker run -d -P --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${TAG} &>/dev/null
   port=$(docker inspect --format '{{(index (index .NetworkSettings.Ports "8080/tcp") 0).HostPort}}' ${DOCKER_IMAGE})
 #  host=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${DOCKER_IMAGE})
@@ -21,16 +21,33 @@ main() {
     myhost=$(docker-machine ip ${DOCKER_MACHINE_NAME})
   fi
   url="http://${myhost}:${port}"
-  sleep 10
-  curl --retry 5 --retry-delay 5 -sSL --head --write-out "%{http_code}" ${url} --output /dev/null
-  if [ $? -eq 0 ]; then
-    log "${green}[PASS] ${DOCKER_IMAGE} Status ${reset}"
-  else
-    docker rm -f ${DOCKER_IMAGE} &>/dev/null
-    die "${DOCKER_IMAGE} status check"
-  fi
+}
+
+# Cleanup after testing
+cleanup() {
+  log "Cleaning up..."
   docker rm -f ${DOCKER_IMAGE} &>/dev/null
 }
 
-check-env
+# Test for status
+test-status() {
+  timer=60
+  delay=5
+  while [[ "$(curl --retry 5 --retry-delay 5 -sSL --head --write-out "%{http_code}" ${url} --output /dev/null)" != "200" ]] ; do
+    [[ ${timer} -le 0 ]] && log "${red}[FAIL] Timer expired before test completed.${reset}" && return 1
+    log "Rechecking in ${delay}s. Timeout in ${timer}s..."
+    sleep ${delay}
+    timer=$(( timer-delay ))
+  done
+  log "${green}[PASS] Status check!${reset}"
+}
+
+# main function
+main() {
+  check-env
+  setup
+  test-status
+  cleanup
+}
+
 main
