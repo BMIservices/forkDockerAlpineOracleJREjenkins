@@ -2,7 +2,7 @@ general:
   branches:
     only:
       - master
-      - add*
+      - /add-.*/
 
 machine:
   services:
