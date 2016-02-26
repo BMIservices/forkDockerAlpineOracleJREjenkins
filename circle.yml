@@ -2,6 +2,7 @@ general:
   branches:
     only:
       - master
+      - add*
 
 machine:
   services:
